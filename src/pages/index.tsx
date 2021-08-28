@@ -21,13 +21,16 @@ export default function Home () {
 
   return (
     <form className={styles.container} onSubmit={handleSubmit}>
-      <label>Email</label>
-      <input type='email' value={email} onChange={event => setEmail( event.target.value )} />
-      <label>Password</label>
-      <input type='password' value={password} onChange={event => setPassword( event.target.value )} />
-      <div>
-        <button type='submit'>Login</button>
+      <div className={styles.content}>
+        <label>Email</label>
+        <input type='email' value={email} onChange={event => setEmail( event.target.value )} />
+        <label>Password</label>
+        <input type='password' value={password} onChange={event => setPassword( event.target.value )} />
+        <div>
+          <button type='submit'>Login</button>
+        </div>
       </div>
+
     </form>
   )
 }

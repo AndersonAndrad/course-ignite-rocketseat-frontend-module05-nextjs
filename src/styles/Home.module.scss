@@ -1,14 +1,21 @@
 .container {
-  background: #f13f49;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 2rem;
   height: 100vh;
 
-  max-width: 1260px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
+.content {
   display: flex;
   flex-direction: column;
 
   align-items: center;
   justify-content: center;
+  width: 100%;
 
   gap: 1rem;
 
@@ -18,7 +25,7 @@
   }
 
   input {
-    height: 3rem;
+    height: 1rem;
     border-radius: 0.2rem;
     border: none;
 
