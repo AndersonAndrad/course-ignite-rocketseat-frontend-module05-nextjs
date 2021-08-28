@@ -1,0 +1,54 @@
+.container {
+  background: #f13f49;
+  height: 100vh;
+
+  max-width: 1260px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 1rem;
+
+  label {
+    color: #fff;
+    width: 30%;
+  }
+
+  input {
+    height: 3rem;
+    border-radius: 0.2rem;
+    border: none;
+
+    width: 30%;
+
+    outline: none;
+    padding: 1rem;
+  }
+
+  div {
+    width: 30%;
+
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      margin-top: 1rem;
+
+      height: 3rem;
+      width: 40%;
+
+      border: none;
+      border-radius: 0.2rem;
+
+      background: #ededed;
+
+      &:hover {
+        cursor: pointer;
+        filter: brightness(0.9);
+      }
+    }
+  }
+}
