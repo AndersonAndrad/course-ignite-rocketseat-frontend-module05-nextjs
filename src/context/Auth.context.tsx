@@ -1,3 +1,4 @@
+import { GetServerSidePropsContext } from 'next'
 import Router from 'next/router'
 import { destroyCookie, parseCookies, setCookie } from 'nookies'
 import { createContext, ReactNode, useContext, useEffect, useState } from "react"
@@ -31,6 +32,11 @@ export function singOut () {
   destroyCookie( undefined, 'nextauth.refreshToken' )
 
   Router.push( '/' )
+}
+
+export function destroyAllAuthCookies ( context: GetServerSidePropsContext ) {
+  destroyCookie( context, 'nextauth.token' )
+  destroyCookie( context, 'nextauth.refreshToken' )
 }
 
 export function AuthProvider ( { children }: AuthProviderProps ) {
