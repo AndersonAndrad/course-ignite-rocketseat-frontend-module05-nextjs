@@ -1,6 +1,6 @@
 import Router from 'next/router'
-import { setCookie } from 'nookies'
-import { createContext, ReactNode, useContext, useState } from "react"
+import { parseCookies, setCookie } from 'nookies'
+import { createContext, ReactNode, useContext, useEffect, useState } from "react"
 import { api } from "../services/api.services"
 
 type SingInCredentials = {
@@ -30,6 +30,18 @@ export function AuthProvider ( { children }: AuthProviderProps ) {
   const [user, setUser] = useState<User>( {} as User )
   const isAuthenticated = !!user
 
+  useEffect( () => {
+    const { 'nextauth.token': token } = parseCookies()
+
+    if ( token ) {
+      api.get( '/me' ).then( ( { data } ) => {
+        const { email, permissions, roles } = data
+
+        setUser( { email, permissions, roles } )
+      } )
+    }
+  }, [] )
+
   async function singIn ( { email, password }: SingInCredentials ) {
     try {
       const { data } = await api.post( '/sessions', { email, password } )
@@ -54,6 +66,8 @@ export function AuthProvider ( { children }: AuthProviderProps ) {
         permissions,
         roles
       } )
+
+      api.defaults.headers['Authorization'] = `Bearer ${token}`
 
       Router.push( '/dashboard' )
     } catch ( error ) {
