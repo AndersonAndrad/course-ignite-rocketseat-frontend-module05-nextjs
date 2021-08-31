@@ -1,4 +1,5 @@
 import { GetServerSidePropsContext } from "next"
+import { Can } from '../components/Can'
 import { useAuth } from "../context/Auth.context"
 import { useCan } from "../hooks/useCan.hook"
 import { setupAPIClient } from "../services/api.services"
@@ -14,7 +15,11 @@ export default function Dashboard () {
   return (
     <div>
       <h1>{user?.email}</h1>
-      {useCanSeeMetrics && <div>metrics</div>}
+      <Can permissions={['metrics.list']}>
+        <div>
+          metrics
+        </div>
+      </Can>
     </div>
   )
 }
