@@ -10,9 +10,10 @@ type SingInCredentials = {
 }
 
 type AuthContextData = {
-  singIn ( credentials: SingInCredentials ): Promise<void>
+  singIn: ( credentials: SingInCredentials ) => Promise<void>
+  singOut: () => void
   isAuthenticated: boolean
-  user: User
+  user: User | undefined
 }
 
 type AuthProviderProps = {
@@ -25,11 +26,15 @@ type User = {
   roles: string[]
 }
 
+let authChannel: BroadcastChannel
+
 const AuthContext = createContext( {} as AuthContextData )
 
 export function singOut () {
   destroyCookie( undefined, 'nextauth.token' )
   destroyCookie( undefined, 'nextauth.refreshToken' )
+
+  authChannel.postMessage( 'singOut' )
 
   Router.push( '/' )
 }
@@ -42,6 +47,21 @@ export function destroyAllAuthCookies ( context: GetServerSidePropsContext ) {
 export function AuthProvider ( { children }: AuthProviderProps ) {
   const [user, setUser] = useState<User>()
   const isAuthenticated = !!user
+
+  useEffect( () => {
+    authChannel = new BroadcastChannel( 'auth' )
+
+    authChannel.onmessage = ( message ) => {
+
+      switch ( message.data ) {
+        case 'singOut':
+          singOut()
+          break
+        default:
+          break
+      }
+    }
+  }, [] )
 
   useEffect( () => {
     const { 'nextauth.token': token } = parseCookies()
@@ -94,7 +114,7 @@ export function AuthProvider ( { children }: AuthProviderProps ) {
   }
 
   return (
-    <AuthContext.Provider value={{ singIn, isAuthenticated, user }} >
+    <AuthContext.Provider value={{ singIn, isAuthenticated, user, singOut }} >
       {children}
     </AuthContext.Provider>
   )

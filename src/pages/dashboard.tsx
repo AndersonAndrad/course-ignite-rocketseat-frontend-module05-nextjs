@@ -5,17 +5,19 @@ import { setupAPIClient } from "../services/api.services"
 import { withSSRAuth } from "../utils/withSSRAuth.utils"
 
 export default function Dashboard () {
-  const { user } = useAuth()
+  const { user, singOut } = useAuth()
 
   return (
-    <div>
+    <>
       <h1>{user?.email}</h1>
       <Can permissions={['metrics.list']}>
-        <div>
+        <>
           metrics
-        </div>
+        </>
       </Can>
-    </div>
+
+      <button onClick={singOut}>Sing out</button>
+    </>
   )
 }
 
